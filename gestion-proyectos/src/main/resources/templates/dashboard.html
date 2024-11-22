@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    
+    
+    <div class="container"> 
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+        <div class="row align-items-center"> 
+            <div class="col-2"> </div> 
+            <div class="col-10 text-right d-flex justify-content-end"> 
+                <!-- Botón de Cerrar Sesión -->
+                <form th:action="@{/logout}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                </form>
+                
+            </div> 
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2 class="text-center my-4">Panel de Proyectos</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre del Proyecto</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="project : ${projects}">
+                    <td th:text="${project.name}">Nombre del Proyecto</td>
+                    <td th:text="${project.description}">Descripción del Proyecto</td>
+                    <td>
+                        <a th:href="@{/project/view/{id}(id=${project.id})}" class="btn btn-info btn-sm">Ver</a>
+                        <a th:href="@{/project/edit/{id}(id=${project.id})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/project/delete/{id}(id=${project.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este proyecto?');">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <a th:href="@{/project/create}" class="btn btn-success">Crear Nuevo Proyecto</a>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Cuando se carga la página, se hace el fade-in
+            $('body').hide().fadeIn(500);
+        
+            // Cuando se hace clic en un enlace, se hace el fade-out
+            $('a').click(function(event) {
+                event.preventDefault();
+                newLocation = this.href;
+                $('body').fadeOut(500, function() {
+                    window.location = newLocation;
+                });
+            });
+        });
+    </script>
+        
+</body>
+</html>
+

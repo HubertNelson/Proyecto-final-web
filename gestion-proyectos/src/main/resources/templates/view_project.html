@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Proyecto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container"> 
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+    </div>
+    <div class="container">
+        <h2 class="text-center my-4">Detalles del Proyecto</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 th:text="${project.name}">Nombre del Proyecto</h3>
+            </div>
+            <div class="card-body">
+                <p th:text="${project.description}">Descripción del Proyecto</p>
+                
+                <img th:src="${project.imageUrl}" alt="Imagen del Proyecto" class="img-fluid mb-3">
+
+                <div class="text-center mt-3">
+                    <a th:href="@{/project/edit/{id}(id=${project.id})}" class="btn btn-warning">Editar Proyecto</a>
+                    <a th:href="@{/dashboard}" class="btn btn-primary">Volver al Dashboard</a>
+                </div>
+            </div>
+        </div>
+        <h4 class="text-center mb-4">Tareas del Proyecto</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre de la Tarea</th>
+                    <th>Descripción</th>
+                    <th>Fecha Límite</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task : ${project.tasks}">
+                    <td th:text="${task.title}">Nombre de la Tarea</td>
+                    <td th:text="${task.description}">Descripción de la Tarea</td>
+                    <td th:text="${#dates.format(task.dueDate, 'dd/MM/yyyy')}">Fecha Límite</td>
+                    <td th:text="${task.completed ? 'Completada' : 'Pendiente'}">Estado</td>
+                    <td>
+                        <a th:href="@{/task/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/task/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta tarea?');">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center mb-4">
+            <a th:href="@{/task/create/{projectId}(projectId=${project.id})}" class="btn btn-success">Crear Nueva Tarea</a>
+        </div>
+        <h4 class="text-center mb-4"></h4>
+        <div id="calendar"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                events: [
+                    <tr th:each="task : ${project.tasks}">
+                        {
+                            title: '<span th:text="${task.title}"></span>',
+                            start: '<span th:text="${#dates.format(task.dueDate, 'yyyy-MM-dd')}"></span>',
+                            description: '<span th:text="${task.description}"></span>'
+                        }<span th:if="${not #lists.isLast(task)}">,</span>
+                    </tr>
+                ],
+                eventRender: function(event, element) {
+                    element.qtip({
+                        content: event.description
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Cuando se carga la página, se hace el fade-in
+            $('body').hide().fadeIn(500);
+        
+            // Cuando se hace clic en un enlace, se hace el fade-out
+            $('a').click(function(event) {
+                event.preventDefault();
+                newLocation = this.href;
+                $('body').fadeOut(500, function() {
+                    window.location = newLocation;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

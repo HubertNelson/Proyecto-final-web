@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Proyecto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container"> 
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+    </div>
+    <div class="container">
+        <h2 class="text-center my-4">Crear Nuevo Proyecto</h2>
+        <form th:action="@{/project/create}" th:object="${project}" method="post">
+            <div class="form-group">
+                <label for="name">Nombre del Proyecto:</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción del Proyecto:</label>
+                <textarea id="description" th:field="*{description}" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="imageUrl">URL de la Imagen:</label> 
+                <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success">Crear Proyecto</button>
+        </form>
+        <div class="text-center mt-3">
+            <a th:href="@{/dashboard}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Cuando se carga la página, se hace el fade-in
+            $('body').hide().fadeIn(500);
+        
+            // Cuando se hace clic en un enlace, se hace el fade-out
+            $('a').click(function(event) {
+                event.preventDefault();
+                newLocation = this.href;
+                $('body').fadeOut(500, function() {
+                    window.location = newLocation;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Tarea</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container"> 
+        <a href="/"><img src="/images/logo.png" alt="Logo" class="logo"></a>
+    </div>
+    <div class="container">
+        <h2 class="text-center my-4">Editar Tarea</h2>
+        <form th:action="@{/task/edit/{id}(id=${task.id})}" th:object="${task}" method="post">
+            <div class="form-group">
+                <label for="title">Título de la Tarea:</label>
+                <input type="text" id="title" th:field="*{title}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción de la Tarea:</label>
+                <textarea id="description" th:field="*{description}" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dueDate">Fecha Límite:</label>
+                <input type="date" id="dueDate" th:value="${#dates.format(task.dueDate, 'yyyy-MM-dd')}" class="form-control" name="dueDate">
+            </div>
+            <div class="form-group">
+                <label for="completed">Estado:</label>
+                <select id="completed" th:field="*{completed}" class="form-control">
+                    <option value="false">Pendiente</option>
+                    <option value="true">Completada</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+        <div class="text-center mt-3">
+            <a th:href="@{/project/view/{id}(id=${task.project.id})}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Cuando se carga la página, se hace el fade-in
+            $('body').hide().fadeIn(500);
+        
+            // Cuando se hace clic en un enlace, se hace el fade-out
+            $('a').click(function(event) {
+                event.preventDefault();
+                newLocation = this.href;
+                $('body').fadeOut(500, function() {
+                    window.location = newLocation;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
